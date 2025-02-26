@@ -1,4 +1,4 @@
-package client
+package provider
 
 import (
 	"bytes"
@@ -87,6 +87,14 @@ func (c *Client) Get(path string) (map[string]interface{}, error) {
 
 func (c *Client) Patch(path string, body interface{}) (map[string]interface{}, error) {
 	req, err := c.newRequest("PATCH", path, body)
+	if err != nil {
+		return nil, err
+	}
+	return c.do(req)
+}
+
+func (c *Client) Put(path string, body interface{}) (map[string]interface{}, error) {
+	req, err := c.newRequest("PUT", path, body)
 	if err != nil {
 		return nil, err
 	}
