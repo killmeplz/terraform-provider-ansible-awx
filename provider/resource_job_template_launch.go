@@ -12,22 +12,27 @@ func ResourceJobTemplateLaunch() *schema.Resource {
 		Read:   resourceJobTemplateLaunchRead,
 		Update: resourceJobTemplateLaunchCreateOrUpdate,
 		Delete: resourceJobTemplateLaunchDelete,
+		Description: "Launches an Ansible AWX/Tower job template. This resource allows you to execute job templates and " +
+			"optionally override certain parameters such as inventory and variables. The job will be launched when this " +
+			"resource is created or updated.",
 
 		Schema: map[string]*schema.Schema{
 			"job_template_id": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "Optional description",
+				Type:         schema.TypeString,
+				Required:     true,
+				ValidateFunc: StringIsID,
+				Description:  "The ID of the job template to launch. This is a required field that specifies which AWX/Tower job template should be executed.",
 			},
 			"inventory_id": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Inventory id",
+				Type:         schema.TypeString,
+				Optional:     true,
+				ValidateFunc: StringIsID,
+				Description:  "The ID of the inventory to use for this job launch. If specified, this will override the inventory set in the job template.",
 			},
 			"extra_vars": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "A JSON or YAML string containing extra variables to pass to the job template. These variables will be merged with any survey variables defined in the job template.",
 			},
 		},
 	}

@@ -12,45 +12,49 @@ func ResourceInventory() *schema.Resource {
 		Read:   resourceInventoryRead,
 		Update: resourceInventoryUpdate,
 		Delete: resourceInventoryDelete,
+		Description: "Manages an Ansible AWX/Tower inventory. An inventory is a collection of hosts against which jobs " +
+			"may be launched, the same as an Ansible inventory file. Inventories are divided into groups and these " +
+			"groups contain the actual hosts. Groups may be sourced manually, by entering host names into Tower, or " +
+			"from one of Ansible Tower's supported cloud providers.",
 
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Name of this credential.",
+				Description: "Name of this inventory. Used to identify the inventory in the AWX/Tower interface.",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Optional description of this credential.",
+				Description: "Optional description of this inventory. Can be used to provide more context about the inventory's purpose or contents.",
 			},
 			"organization": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				Description:  "Inherit permissions from organization roles. If provided on creation, do not give either user or team.",
 				ValidateFunc: StringIsID,
+				Description:  "The organization the inventory belongs to. Inventories must be associated with an organization for role-based access control.",
 			},
 			"kind": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				ForceNew:    true,
-				Description: "Kind of inventory being represented. (choice)",
+				Description: "The kind of inventory being represented. Choices include: '' (regular inventory), 'smart' (smart inventory), or 'constructed' (constructed inventory).",
 			},
 			"host_filter": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Filter that will be applied to the hosts of this inventory.",
+				Description: "Filter that will be applied to the hosts of this inventory. Only used when kind=smart.",
 			},
 			"variables": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Specify the type of credential you want to create. Refer to the documentation for details on each type.",
+				Description: "Inventory variables in JSON or YAML format. These variables will be available to all hosts in this inventory.",
 			},
 			"prevent_instance_group_fallback": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "If enabled, the inventory will prevent adding any organization instance groups to the list of preferred instances groups to run associated job templates on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.",
+				Description: "If enabled, the inventory will prevent falling back to instance groups defined at the organization or tower level. When disabled, the inventory will use instance groups from the organization or tower level if no inventory-specific instance groups are defined.",
 			},
 		},
 	}

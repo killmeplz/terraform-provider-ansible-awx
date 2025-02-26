@@ -12,81 +12,84 @@ func ResourceJobTemplateSchedule() *schema.Resource {
 		Read:   resourceJobTemplateScheduleRead,
 		Update: resourceJobTemplateScheduleUpdate,
 		Delete: resourceJobTemplateScheduleDelete,
+		Description: "Manages a schedule for an Ansible AWX/Tower job template. This resource allows you to create, " +
+			"update, and delete scheduled runs of job templates. You can configure various parameters including the " +
+			"execution schedule (using RRULE format), playbook options, and variables.",
 
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Name of this job template.",
+				Description: "Name of this schedule. Used to identify the schedule in the AWX/Tower interface.",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Optional description",
+				Description: "Optional description of the schedule. Can be used to provide more context about the schedule's purpose.",
 			},
 			"job_template_id": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Optional description",
+				Description: "The ID of the job template this schedule is associated with. This defines which job template will be executed on the schedule.",
 			},
 			"job_type": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Default:     "run",
-				Description: "Choose between run and check.",
+				Description: "The type of job run. Can be either 'run' for normal execution or 'check' for check mode.",
 			},
 			"inventory_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Inventory id",
+				Description: "The ID of the inventory to use for this scheduled job. If specified, this will override the inventory set in the job template.",
 			},
 			"project_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Project ID",
+				Description: "The ID of the project containing the playbook to execute. If specified, this will override the project set in the job template.",
 			},
 			"playbook": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Playbook to use",
+				Description: "The name of the playbook to execute. If specified, this will override the playbook set in the job template.",
 			},
 			"scm_branch": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Specific branch, tag or commit to checkout.",
+				Description: "Specific branch, tag or commit to checkout from SCM before running the playbook.",
 			},
 			"forks": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Default:     0,
-				Description: "",
+				Description: "Number of parallel processes to use while executing the playbook. Default of 0 uses the ansible default.",
 			},
 			"limit": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Default:     "",
-				Description: "",
+				Description: "Limit the execution to specific hosts or groups. Corresponds to ansible's --limit parameter.",
 			},
 			"verbosity": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Default:     0,
-				Description: "Output verbosity",
+				Description: "Control the level of output ansible will produce during execution. Higher numbers mean more output.",
 			},
 			"extra_vars": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "A JSON or YAML string containing extra variables to pass to the playbook. These variables will be merged with any survey variables.",
 			},
 			"job_tags": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "Specify which tagged tasks from the playbook to execute. Only tasks with specified tags will be run.",
 			},
 			"rrule": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "A recurrence rule (RRULE) string that defines when the schedule will run. Uses the iCal RRULE format (e.g., FREQ=DAILY;INTERVAL=1).",
 			},
 		},
 	}

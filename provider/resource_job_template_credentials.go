@@ -13,18 +13,20 @@ func ResourceJobTemplateCredential() *schema.Resource {
 		Read:   resourceJobTemplateCredentialRead,
 		Update: resourceJobTemplateCredentialUpdate,
 		Delete: resourceJobTemplateCredentialDelete,
+		Description: "Manages credential associations for an Ansible AWX/Tower job template. This resource allows you to " +
+			"associate or disassociate credentials with a job template. Credentials can be used for authentication with " +
+			"various services like SSH, cloud providers, or vault systems when the job template is executed.",
 
 		Schema: map[string]*schema.Schema{
 			"job_template_id": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Optional description",
+				Description: "The ID of the job template to associate credentials with. This defines which job template will use the specified credentials.",
 			},
 			"credentials_id": {
 				Type:        schema.TypeString,
-				Optional:    true,
-				Default:     "run",
-				Description: "Choose between run and check.",
+				Required:    true,
+				Description: "The ID of the credential to associate with the job template. This credential will be available during job template execution.",
 			},
 		},
 	}

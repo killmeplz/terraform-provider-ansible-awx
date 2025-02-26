@@ -13,35 +13,39 @@ func ResourceCredentials() *schema.Resource {
 		Read:   resourceCredentialsRead,
 		Update: resourceCredentialsUpdate,
 		Delete: resourceCredentialsDelete,
+		Description: "Manages credentials in Ansible AWX/Tower. Credentials are utilized by Tower for authentication " +
+			"when launching jobs against machines, synchronizing with inventory sources, and importing project content from " +
+			"version control systems. Different credential types support different authentication methods (SSH keys, " +
+			"username/password, API tokens, etc.) depending on the service they connect to.",
 
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Name of this credential.",
+				Description: "Name of this credential. Used to identify the credential in the AWX/Tower interface.",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Optional description of this credential.",
+				Description: "Optional description of this credential. Can be used to provide more context about the credential's purpose or usage.",
 			},
 			"organization": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				Description:  "Inherit permissions from organization roles. If provided on creation, do not give either user or team.",
+				Description:  "The organization the credential belongs to. If provided, the credential will inherit permissions from organization roles. Cannot be specified together with user or team.",
 				ValidateFunc: StringIsID,
 			},
 			"credential_type": {
 				Type:         schema.TypeString,
 				Required:     true,
-				Description:  "Specify the type of credential you want to create. Refer to the documentation for details on each type.",
+				Description:  "The type of credential being created (e.g., SSH, AWS, GitHub, etc.). This determines what authentication fields are required in the inputs parameter.",
 				ValidateFunc: StringIsID,
 			},
 			"inputs": {
 				Type:        schema.TypeMap,
 				Required:    true,
 				Sensitive:   true,
-				Description: "Specify the type of credential you want to create. Refer to the documentation for details on each type.",
+				Description: "A map of inputs required by the credential type. The specific inputs required depend on the credential_type. For example, an SSH credential might need 'username' and 'password' or 'ssh_key_data'.",
 			},
 		},
 	}

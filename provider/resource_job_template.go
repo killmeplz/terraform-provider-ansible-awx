@@ -12,79 +12,83 @@ func ResourceJobTemplate() *schema.Resource {
 		Read:   resourceJobTemplateRead,
 		Update: resourceJobTemplateUpdate,
 		Delete: resourceJobTemplateDelete,
+		Description: "Manages an Ansible AWX/Tower job template. A job template is a definition and set of parameters for running " +
+			"an Ansible job. Job templates are useful to execute the same job many times. Job templates can contain specifications " +
+			"for: the inventory to run the job against, the project and playbook to use, credentials, extra variables, and various " +
+			"other parameters.",
 
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Name of this job template.",
+				Description: "Name of this job template. Used to identify the template in the AWX/Tower interface.",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Optional description",
+				Description: "Optional description of the job template. Can be used to provide more context about the template's purpose.",
 			},
 			"job_type": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Default:     "run",
-				Description: "Choose between run and check.",
+				Description: "The type of job to run. Can be either 'run' for normal execution or 'check' for check mode (dry run).",
 			},
 			"inventory_id": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				Description:  "Inventory id",
+				Description:  "The ID of the inventory to be used by this job template. Defines which hosts the playbook will be run against.",
 				ValidateFunc: StringIsID,
 			},
 			"project_id": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				Description:  "Project ID",
+				Description:  "The ID of the project containing the playbook to be used by this job template.",
 				ValidateFunc: StringIsID,
 			},
 			"playbook": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Playbook to use",
+				Description: "The name of the playbook to be run. The playbook must exist in the project specified by project_id.",
 			},
 			"scm_branch": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Specific branch, tag or commit to checkout.",
+				Description: "Specific branch, tag or commit to checkout from SCM before running the playbook.",
 			},
 			"forks": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Default:     0,
-				Description: "",
+				Description: "Number of parallel processes to use while executing the playbook. Default of 0 uses the ansible default.",
 			},
 			"limit": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Default:     "",
-				Description: "",
+				Description: "Limit the execution to specific hosts or groups. Corresponds to ansible's --limit parameter.",
 			},
 			"verbosity": {
 				Type:        schema.TypeInt,
 				Optional:    true,
 				Default:     0,
-				Description: "Output verbosity",
+				Description: "Control the level of output Ansible will produce during execution. Higher numbers mean more verbose output (0-4).",
 			},
 			"extra_vars": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "A JSON or YAML string containing extra variables to pass to the playbook. These variables will be available to the playbook and any surveys.",
 			},
 			"job_tags": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "",
+				Description: "Specify which tagged tasks from the playbook to execute. Only tasks with the specified tags will be run.",
 			},
 			"ask_inventory_on_launch": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "",
+				Description: "If enabled, users will be prompted to select an inventory when the job template is launched.",
 			},
 		},
 	}

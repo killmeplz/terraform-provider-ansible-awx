@@ -13,85 +13,89 @@ func ResourceProject() *schema.Resource {
 		Read:   resourceProjectRead,
 		Update: resourceProjectUpdate,
 		Delete: resourceProjectDelete,
+		Description: "Manages an Ansible AWX/Tower project. A project is a logical collection of Ansible playbooks, " +
+			"represented in Tower. You can manage playbooks and playbook directories by either placing them manually " +
+			"under the Project Base Path on your Tower server, or by placing your playbooks into a source code " +
+			"management (SCM) system supported by Tower, including Git, Subversion, and Mercurial.",
 
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Name of this credential.",
+				Description: "Name of this project. Used to identify the project in the AWX/Tower interface.",
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Optional description of this credential.",
+				Description: "Optional description of this project. Can be used to provide more context about the project's purpose.",
 			},
 			"organization": {
 				Type:        schema.TypeInt,
 				Optional:    true,
-				Description: "Inherit permissions from organization roles. If provided on creation, do not give either user or team.",
+				Description: "The organization the project belongs to. Projects must be associated with an organization for role-based access control.",
 			},
 			"local_path": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				ForceNew:    true,
-				Description: "Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.",
+				Description: "The local path (relative to PROJECTS_ROOT) on the AWX/Tower server where playbooks are stored. Used when scm_type is set to 'manual'.",
 			},
 			"scm_type": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Specifies the source control system used to store the project.",
+				Description: "Type of source control management system. Valid options include: 'manual', 'git', 'svn', 'hg', and others as supported by AWX/Tower.",
 			},
 			"scm_url": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "The location where the project is stored.",
+				Description: "The source control URL for the project. Required when scm_type is set to a valid SCM system.",
 			},
 			"scm_branch": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Specific branch, tag or commit to checkout.",
+				Description: "The branch, tag, or commit to checkout from the SCM system. Default is the default branch of the SCM repository.",
 			},
 			"scm_refspec": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "For git projects, an additional refspec to fetch.",
+				Description: "For git projects, an additional refspec to fetch. Can be used to retrieve additional branches or pull requests.",
 			},
 			"scm_clean": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "Discard any local changes before syncing the project.",
+				Description: "If enabled, the project directory will be cleared before each update, removing any untracked files.",
 			},
 			"scm_track_submodules": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "Track submodules latest commits on defined branch.",
+				Description: "If enabled, git submodules will be tracked and updated when the project is updated.",
 			},
 			"scm_delete_on_update": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "Delete the project before syncing.",
+				Description: "If enabled, the project directory will be deleted and recreated with each project update.",
 			},
 			"credential_id": {
 				Type:         schema.TypeString,
 				Optional:     true,
 				Default:      "",
-				Description:  "SCM credential id",
+				Description:  "The ID of the credential to use for authenticating with the SCM system.",
 				ValidateFunc: StringIsID,
 			},
 			"scm_update_on_launch": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "Update the project when a job is launched that uses the project.",
+				Description: "If enabled, the project will update from its SCM source before each job using this project is run.",
 			},
 			"allow_override": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "Allow changing the SCM branch or revision in a job template that uses this project.",
+				Description: "If enabled, users can override the SCM branch or revision in job templates that use this project.",
 			},
 		},
 	}

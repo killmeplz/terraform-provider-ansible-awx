@@ -12,14 +12,15 @@ func New() *schema.Provider {
 			"host": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "The base URL for the AWX instance.",
+				Description: "The base URL for the AWX/Tower instance (e.g., https://awx.example.com). This URL will be used for all API calls.",
 				DefaultFunc: schema.EnvDefaultFunc("AWX_HOST", nil),
 			},
 			"token": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "The API token for authenticating with AWX.",
+				Description: "The OAuth2 token or Personal Access Token for authenticating with AWX/Tower. This token must have sufficient permissions to perform the requested operations.",
 				DefaultFunc: schema.EnvDefaultFunc("AWX_TOKEN", nil),
+				Sensitive:   true,
 			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{

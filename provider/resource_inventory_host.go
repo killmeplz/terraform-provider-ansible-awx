@@ -12,39 +12,42 @@ func ResourceInventoryHost() *schema.Resource {
 		Read:   resourceInventoryHostRead,
 		Update: resourceInventoryHostUpdate,
 		Delete: resourceInventoryHostDelete,
+		Description: "Manages a host within an Ansible AWX/Tower inventory. A host represents a managed node that " +
+			"Ansible can configure and manage. Hosts can have variables specific to that host and can be enabled " +
+			"or disabled to control whether they are available for running jobs.",
 
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:        schema.TypeString,
 				Required:    true,
-				Description: "Name of this credential.",
+				Description: "Name of this host. This can be either a DNS name, IP address, or any other name used to identify the host.",
 			},
 			"inventory_id": {
 				Type:         schema.TypeString,
 				Required:     true,
-				Description:  "The value used by the remote inventory source to uniquely identify the host.",
+				Description:  "The ID of the inventory this host belongs to. Hosts must be associated with an inventory to be managed by AWX/Tower.",
 				ValidateFunc: StringIsID,
 			},
 			"description": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Optional description of this credential.",
+				Description: "Optional description of this host. Can be used to provide additional context about the host's purpose or configuration.",
 			},
 			"enabled": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,
-				Description: "Is this host online and available for running jobs? ",
+				Description: "If enabled (true), this host can be used in jobs. If disabled (false), this host will not be used in jobs even if included in the inventory.",
 			},
 			"instance_id": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "The value used by the remote inventory source to uniquely identify the host.",
+				Description: "The instance ID for this host if it is managed through a cloud provider. This helps track the host across IP or DNS changes.",
 			},
 			"variables": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "Specify the type of credential you want to create. Refer to the documentation for details on each type.",
+				Description: "Host variables in JSON or YAML format. These variables will be available to playbooks when running against this specific host and will override inventory variables.",
 			},
 		},
 	}
