@@ -35,16 +35,15 @@ func ResourceJobTemplateLaunch() *schema.Resource {
 
 func resourceJobTemplateLaunchCreateOrUpdate(d *schema.ResourceData, m interface{}) error {
 	clientInstance := m.(*Client)
-	job_template_id := d.Get("job_template_id")
 
 	data := map[string]interface{}{}
 	data["job_template_id"] = IfaceToInt(d.Get("job_template_id"))
 	data["extra_vars"] = d.Get("extra_vars").(string)
-	if d.Get("inventory_id") != 0 {
+	if d.Get("inventory_id") != "" {
 		data["inventory_id"] = IfaceToInt(d.Get("inventory_id"))
 	}
 
-	resp, err := clientInstance.Post(fmt.Sprintf("/api/v2/job_templates/%d/launch", job_template_id), data)
+	resp, err := clientInstance.Post(fmt.Sprintf("/api/v2/job_templates/%s/launch", d.Get("job_template_id")), data)
 	if err != nil {
 		return fmt.Errorf("failed to create AWX job template launch: %s", err)
 	}

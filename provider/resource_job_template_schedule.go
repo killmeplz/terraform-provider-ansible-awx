@@ -98,7 +98,6 @@ func resourceJobTemplateScheduleCreate(d *schema.ResourceData, m interface{}) er
 		"name":        d.Get("name").(string),
 		"description": d.Get("description").(string),
 		"job_type":    d.Get("job_type").(string),
-		"project":     IfaceToInt(d.Get("project_id")),
 		"playbook":    d.Get("playbook").(string),
 		"scm_branch":  d.Get("scm_branch").(string),
 		"forks":       d.Get("forks"),
@@ -141,7 +140,6 @@ func resourceJobTemplateScheduleRead(d *schema.ResourceData, m interface{}) erro
 	d.Set("name", resp["name"].(string))
 	d.Set("description", resp["description"].(string))
 	d.Set("job_type", resp["job_type"].(string))
-	d.Set("project", F64ToStr(resp["project"]))
 	d.Set("playbook", resp["playbook"])
 	d.Set("scm_branch", resp["scm_branch"].(string))
 	d.Set("forks", resp["forks"])
@@ -150,7 +148,7 @@ func resourceJobTemplateScheduleRead(d *schema.ResourceData, m interface{}) erro
 	d.Set("extra_vars", resp["extra_vars"])
 	d.Set("job_tags", resp["job_tags"].(string))
 	d.Set("rrule", resp["rrule"].(string))
-	if resp["inventory"] != 0 {
+	if resp["inventory"] != nil {
 		d.Set("inventory_id", F64ToStr(resp["inventory"]))
 	}
 	return nil
