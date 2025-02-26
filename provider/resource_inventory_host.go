@@ -62,7 +62,7 @@ func resourceInventoryHostCreate(d *schema.ResourceData, m interface{}) error {
 
 	resp, err := clientInstance.Post(fmt.Sprintf("/api/v2/inventories/%s/hosts", d.Get("inventory_id").(string)), data)
 	if err != nil {
-		return fmt.Errorf("failed to create AWX resource: %s", err)
+		return fmt.Errorf("failed to create AWX inventory host: %s", err)
 	}
 
 	id, ok := resp["id"].(float64)
@@ -83,12 +83,12 @@ func resourceInventoryHostRead(d *schema.ResourceData, m interface{}) error {
 			d.SetId("")
 			return nil
 		}
-		return fmt.Errorf("failed to read AWX resource: %s", err)
+		return fmt.Errorf("failed to read AWX inventory host: %s", err)
 	}
 
 	d.Set("name", resp["name"].(string))
 	d.Set("description", resp["description"].(string))
-	d.Set("inventory_id", fmt.Sprintf("%.0f", resp["inventory"].(float64)))
+	d.Set("inventory_id", F64ToStr(resp["inventory"]))
 	d.Set("enabled", resp["enabled"])
 	d.Set("instance_id", resp["instance_id"].(string))
 	d.Set("variables", resp["variables"].(string))
@@ -109,7 +109,7 @@ func resourceInventoryHostUpdate(d *schema.ResourceData, m interface{}) error {
 
 	_, err := clientInstance.Put(fmt.Sprintf("/api/v2/hosts/%s", id), data)
 	if err != nil {
-		return fmt.Errorf("failed to update AWX resource: %s, %v", err, data)
+		return fmt.Errorf("failed to update AWX inventory host: %s, %v", err, data)
 	}
 	return resourceInventoryHostRead(d, m)
 }
@@ -120,7 +120,7 @@ func resourceInventoryHostDelete(d *schema.ResourceData, m interface{}) error {
 
 	err := clientInstance.Delete(fmt.Sprintf("/api/v2/hosts/%s", id))
 	if err != nil {
-		return fmt.Errorf("failed to delete AWX resource: %s", err)
+		return fmt.Errorf("failed to delete AWX inventory host: %s", err)
 	}
 	d.SetId("")
 	return nil

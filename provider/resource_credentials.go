@@ -61,7 +61,7 @@ func resourceCredentialsCreate(d *schema.ResourceData, m interface{}) error {
 
 	resp, err := clientInstance.Post("/api/v2/credentials/", data)
 	if err != nil {
-		return fmt.Errorf("failed to create AWX resource: %s", err)
+		return fmt.Errorf("failed to create AWX credentials: %s", err)
 	}
 
 	id, ok := resp["id"].(float64)
@@ -82,7 +82,7 @@ func resourceCredentialsRead(d *schema.ResourceData, m interface{}) error {
 			d.SetId("")
 			return nil
 		}
-		return fmt.Errorf("failed to read AWX resource: %s", err)
+		return fmt.Errorf("failed to read AWX credentials: %s", err)
 	}
 
 	d.Set("name", resp["name"])
@@ -109,7 +109,7 @@ func resourceCredentialsUpdate(d *schema.ResourceData, m interface{}) error {
 
 	_, err := clientInstance.Put(fmt.Sprintf("/api/v2/credentials/%s/", id), data)
 	if err != nil {
-		return fmt.Errorf("failed to update AWX resource: %s", err)
+		return fmt.Errorf("failed to update AWX credentials: %s", err)
 	}
 	return resourceCredentialsRead(d, m)
 }
@@ -120,7 +120,7 @@ func resourceCredentialsDelete(d *schema.ResourceData, m interface{}) error {
 
 	err := clientInstance.Delete(fmt.Sprintf("/api/v2/credentials/%s/", id))
 	if err != nil {
-		return fmt.Errorf("failed to delete AWX resource: %s", err)
+		return fmt.Errorf("failed to delete AWX credentials: %s", err)
 	}
 	d.SetId("")
 	return nil

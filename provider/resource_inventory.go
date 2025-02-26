@@ -25,9 +25,10 @@ func ResourceInventory() *schema.Resource {
 				Description: "Optional description of this credential.",
 			},
 			"organization": {
-				Type:        schema.TypeInt,
-				Optional:    true,
-				Description: "Inherit permissions from organization roles. If provided on creation, do not give either user or team.",
+				Type:         schema.TypeString,
+				Optional:     true,
+				Description:  "Inherit permissions from organization roles. If provided on creation, do not give either user or team.",
+				ValidateFunc: StringIsID,
 			},
 			"kind": {
 				Type:        schema.TypeString,
@@ -60,7 +61,7 @@ func resourceInventoryCreate(d *schema.ResourceData, m interface{}) error {
 	data := map[string]interface{}{
 		"name":                            d.Get("name").(string),
 		"description":                     d.Get("description").(string),
-		"organization":                    d.Get("organization"),
+		"organization":                    IfaceToInt(d.Get("organization")),
 		"kind":                            d.Get("kind").(string),
 		"host_filter":                     d.Get("host_filter").(string),
 		"variables":                       d.Get("variables").(string),
@@ -69,7 +70,7 @@ func resourceInventoryCreate(d *schema.ResourceData, m interface{}) error {
 
 	resp, err := clientInstance.Post("/api/v2/inventories/", data)
 	if err != nil {
-		return fmt.Errorf("failed to create AWX instance: %s", err)
+		return fmt.Errorf("failed to create AWX inventory: %s", err)
 	}
 
 	id, ok := resp["id"].(float64)
@@ -90,7 +91,7 @@ func resourceInventoryRead(d *schema.ResourceData, m interface{}) error {
 			d.SetId("")
 			return nil
 		}
-		return fmt.Errorf("failed to read AWX instance: %s", err)
+		return fmt.Errorf("failed to read AWX inventory: %s", err)
 	}
 
 	d.Set("name", resp["name"].(string))
@@ -107,18 +108,18 @@ func resourceInventoryUpdate(d *schema.ResourceData, m interface{}) error {
 	clientInstance := m.(*Client)
 	id := d.Id()
 
-	updateData := map[string]interface{}{}
-	updateData["name"] = d.Get("name").(string)
-	updateData["description"] = d.Get("description").(string)
-	updateData["organization"] = d.Get("organization")
-	updateData["kind"] = d.Get("kind").(string)
-	updateData["host_filter"] = d.Get("host_filter").(string)
-	updateData["variables"] = d.Get("variables").(string)
-	updateData["prevent_instance_group_fallback"] = d.Get("prevent_instance_group_fallback")
+	data := map[string]interface{}{}
+	data["name"] = d.Get("name").(string)
+	data["description"] = d.Get("description").(string)
+	data["organization"] = IfaceToInt(d.Get("organization"))
+	data["kind"] = d.Get("kind").(string)
+	data["host_filter"] = d.Get("host_filter").(string)
+	data["variables"] = d.Get("variables").(string)
+	data["prevent_instance_group_fallback"] = d.Get("prevent_instance_group_fallback")
 
-	_, err := clientInstance.Put(fmt.Sprintf("/api/v2/inventories/%s/", id), updateData)
+	_, err := clientInstance.Put(fmt.Sprintf("/api/v2/inventories/%s/", id), data)
 	if err != nil {
-		return fmt.Errorf("failed to update AWX instance: %s, %v", err, updateData)
+		return fmt.Errorf("failed to update AWX inventory: %s, %v", err, data)
 	}
 	return resourceInventoryRead(d, m)
 }
@@ -129,7 +130,7 @@ func resourceInventoryDelete(d *schema.ResourceData, m interface{}) error {
 
 	err := clientInstance.Delete(fmt.Sprintf("/api/v2/inventories/%s/", id))
 	if err != nil {
-		return fmt.Errorf("failed to delete AWX instance: %s", err)
+		return fmt.Errorf("failed to delete AWX inventory: %s", err)
 	}
 	d.SetId("")
 	return nil

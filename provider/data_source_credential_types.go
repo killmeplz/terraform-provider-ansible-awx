@@ -10,7 +10,7 @@ func dataSourceCredentialTypes() *schema.Resource {
 	return &schema.Resource{
 		Read: dataSourceCredentialTypesRead,
 
-		Description: "Encrypt a string value with given public key using sodium library",
+		Description: "Get all credentials types from AWX API",
 
 		Schema: map[string]*schema.Schema{
 			"types": {

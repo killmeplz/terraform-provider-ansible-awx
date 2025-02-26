@@ -120,7 +120,7 @@ func resourceProjectCreate(d *schema.ResourceData, m interface{}) error {
 	}
 	resp, err := clientInstance.Post("/api/v2/projects/", data)
 	if err != nil {
-		return fmt.Errorf("failed to create AWX resource: %s", err)
+		return fmt.Errorf("failed to create AWX project: %s", err)
 	}
 
 	id, ok := resp["id"].(float64)
@@ -141,7 +141,7 @@ func resourceProjectRead(d *schema.ResourceData, m interface{}) error {
 			d.SetId("")
 			return nil
 		}
-		return fmt.Errorf("failed to read AWX resource: %s", err)
+		return fmt.Errorf("failed to read AWX project: %s", err)
 	}
 
 	d.Set("name", resp["name"].(string))
@@ -182,7 +182,7 @@ func resourceProjectUpdate(d *schema.ResourceData, m interface{}) error {
 
 	_, err := clientInstance.Put(fmt.Sprintf("/api/v2/projects/%s/", id), updateData)
 	if err != nil {
-		return fmt.Errorf("failed to update AWX resource: %s, %v", err, updateData)
+		return fmt.Errorf("failed to update AWX project: %s, %v", err, updateData)
 	}
 	return resourceProjectRead(d, m)
 }
@@ -193,7 +193,7 @@ func resourceProjectDelete(d *schema.ResourceData, m interface{}) error {
 
 	err := clientInstance.Delete(fmt.Sprintf("/api/v2/projects/%s/", id))
 	if err != nil {
-		return fmt.Errorf("failed to delete AWX resource: %s", err)
+		return fmt.Errorf("failed to delete AWX project: %s", err)
 	}
 	d.SetId("")
 	return nil

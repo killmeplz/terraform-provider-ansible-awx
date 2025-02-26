@@ -109,7 +109,7 @@ func resourceJobTemplateCreate(d *schema.ResourceData, m interface{}) error {
 
 	resp, err := clientInstance.Post("/api/v2/job_templates/", data)
 	if err != nil {
-		return fmt.Errorf("failed to create AWX instance: %s", err)
+		return fmt.Errorf("failed to create AWX job template: %s", err)
 	}
 
 	id, ok := resp["id"].(float64)
@@ -130,7 +130,7 @@ func resourceJobTemplateRead(d *schema.ResourceData, m interface{}) error {
 			d.SetId("")
 			return nil
 		}
-		return fmt.Errorf("failed to read AWX instance: %s", err)
+		return fmt.Errorf("failed to read AWX job template: %s", err)
 	}
 
 	d.Set("name", resp["name"].(string))
@@ -170,7 +170,7 @@ func resourceJobTemplateUpdate(d *schema.ResourceData, m interface{}) error {
 
 	_, err := clientInstance.Put(fmt.Sprintf("/api/v2/job_templates/%s/", id), data)
 	if err != nil {
-		return fmt.Errorf("failed to update AWX instance: %s, %v", err, data)
+		return fmt.Errorf("failed to update AWX job template: %s, %v", err, data)
 	}
 	return resourceJobTemplateRead(d, m)
 }
@@ -181,7 +181,7 @@ func resourceJobTemplateDelete(d *schema.ResourceData, m interface{}) error {
 
 	err := clientInstance.Delete(fmt.Sprintf("/api/v2/job_templates/%s/", id))
 	if err != nil {
-		return fmt.Errorf("failed to delete AWX instance: %s", err)
+		return fmt.Errorf("failed to delete AWX job template: %s", err)
 	}
 	d.SetId("")
 	return nil

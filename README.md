@@ -12,3 +12,8 @@ provider "ansible_awx" {
   token = "your-api-token"
 }
 ```
+
+Generate docs 
+```
+tfplugindocs generate --provider-name awx
+```
