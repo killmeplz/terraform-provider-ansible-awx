@@ -3,12 +3,12 @@
 page_title: "awx_job_template_schedule Resource - awx"
 subcategory: ""
 description: |-
-  
+  Manages a schedule for an Ansible AWX/Tower job template. This resource allows you to create, update, and delete scheduled runs of job templates. You can configure various parameters including the execution schedule (using RRULE format), playbook options, and variables.
 ---
 
 # awx_job_template_schedule (Resource)
 
-
+Manages a schedule for an Ansible AWX/Tower job template. This resource allows you to create, update, and delete scheduled runs of job templates. You can configure various parameters including the execution schedule (using RRULE format), playbook options, and variables.
 
 
 
@@ -17,23 +17,23 @@ description: |-
 
 ### Required
 
-- `job_template_id` (String) Optional description
-- `name` (String) Name of this job template.
+- `job_template_id` (String) The ID of the job template this schedule is associated with. This defines which job template will be executed on the schedule.
+- `name` (String) Name of this schedule. Used to identify the schedule in the AWX/Tower interface.
 
 ### Optional
 
-- `description` (String) Optional description
-- `extra_vars` (String)
-- `forks` (Number)
-- `inventory_id` (String) Inventory id
-- `job_tags` (String)
-- `job_type` (String) Choose between run and check.
-- `limit` (String)
-- `playbook` (String) Playbook to use
-- `project_id` (String) Project ID
-- `rrule` (String)
-- `scm_branch` (String) Specific branch, tag or commit to checkout.
-- `verbosity` (Number) Output verbosity
+- `description` (String) Optional description of the schedule. Can be used to provide more context about the schedule's purpose.
+- `extra_vars` (String) A JSON or YAML string containing extra variables to pass to the playbook. These variables will be merged with any survey variables.
+- `forks` (Number) Number of parallel processes to use while executing the playbook. Default of 0 uses the ansible default.
+- `inventory_id` (String) The ID of the inventory to use for this scheduled job. If specified, this will override the inventory set in the job template.
+- `job_tags` (String) Specify which tagged tasks from the playbook to execute. Only tasks with specified tags will be run.
+- `job_type` (String) The type of job run. Can be either 'run' for normal execution or 'check' for check mode.
+- `limit` (String) Limit the execution to specific hosts or groups. Corresponds to ansible's --limit parameter.
+- `playbook` (String) The name of the playbook to execute. If specified, this will override the playbook set in the job template.
+- `project_id` (String) The ID of the project containing the playbook to execute. If specified, this will override the project set in the job template.
+- `rrule` (String) A recurrence rule (RRULE) string that defines when the schedule will run. Uses the iCal RRULE format (e.g., FREQ=DAILY;INTERVAL=1).
+- `scm_branch` (String) Specific branch, tag or commit to checkout from SCM before running the playbook.
+- `verbosity` (Number) Control the level of output ansible will produce during execution. Higher numbers mean more output.
 
 ### Read-Only
 

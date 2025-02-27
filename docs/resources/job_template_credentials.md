@@ -3,12 +3,12 @@
 page_title: "awx_job_template_credentials Resource - awx"
 subcategory: ""
 description: |-
-  
+  Manages credential associations for an Ansible AWX/Tower job template. This resource allows you to associate or disassociate credentials with a job template. Credentials can be used for authentication with various services like SSH, cloud providers, or vault systems when the job template is executed.
 ---
 
 # awx_job_template_credentials (Resource)
 
-
+Manages credential associations for an Ansible AWX/Tower job template. This resource allows you to associate or disassociate credentials with a job template. Credentials can be used for authentication with various services like SSH, cloud providers, or vault systems when the job template is executed.
 
 
 
@@ -17,11 +17,8 @@ description: |-
 
 ### Required
 
-- `job_template_id` (String) Optional description
-
-### Optional
-
-- `credentials_id` (String) Choose between run and check.
+- `credentials_id` (String) The ID of the credential to associate with the job template. This credential will be available during job template execution.
+- `job_template_id` (String) The ID of the job template to associate credentials with. This defines which job template will use the specified credentials.
 
 ### Read-Only
 

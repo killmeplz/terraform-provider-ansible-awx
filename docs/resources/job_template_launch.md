@@ -3,12 +3,12 @@
 page_title: "awx_job_template_launch Resource - awx"
 subcategory: ""
 description: |-
-  
+  Launches an Ansible AWX/Tower job template. This resource allows you to execute job templates and optionally override certain parameters such as inventory and variables. The job will be launched when this resource is created or updated.
 ---
 
 # awx_job_template_launch (Resource)
 
-
+Launches an Ansible AWX/Tower job template. This resource allows you to execute job templates and optionally override certain parameters such as inventory and variables. The job will be launched when this resource is created or updated.
 
 
 
@@ -17,12 +17,12 @@ description: |-
 
 ### Required
 
-- `job_template_id` (String) Optional description
+- `job_template_id` (String) The ID of the job template to launch. This is a required field that specifies which AWX/Tower job template should be executed.
 
 ### Optional
 
-- `extra_vars` (String)
-- `inventory_id` (String) Inventory id
+- `extra_vars` (String) A JSON or YAML string containing extra variables to pass to the job template. These variables will be merged with any survey variables defined in the job template.
+- `inventory_id` (String) The ID of the inventory to use for this job launch. If specified, this will override the inventory set in the job template.
 
 ### Read-Only
 

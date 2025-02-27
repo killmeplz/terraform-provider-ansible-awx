@@ -3,12 +3,12 @@
 page_title: "awx_credential_types Data Source - awx"
 subcategory: ""
 description: |-
-  Get all credentials types from AWX API
+  Retrieves all available credential types from AWX/Tower. Credential types define the various authentication mechanisms available for use in credentials. Each type specifies what information is required (like username/password, SSH keys, API tokens, etc.) and how that information should be used for authentication. This data source is useful when you need to reference credential type IDs in credential resources.
 ---
 
 # awx_credential_types (Data Source)
 
-Get all credentials types from AWX API
+Retrieves all available credential types from AWX/Tower. Credential types define the various authentication mechanisms available for use in credentials. Each type specifies what information is required (like username/password, SSH keys, API tokens, etc.) and how that information should be used for authentication. This data source is useful when you need to reference credential type IDs in credential resources.
 
 
 
@@ -18,4 +18,4 @@ Get all credentials types from AWX API
 ### Read-Only
 
 - `id` (String) The ID of this resource.
-- `types` (Map of Number) List of all available credential types
+- `types` (Map of Number) Map of credential type names to their corresponding IDs. Common types include 'Machine' for SSH credentials, 'Source Control' for VCS access, 'Amazon Web Services', 'OpenStack', 'VMware vCenter', etc.

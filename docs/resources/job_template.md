@@ -3,12 +3,12 @@
 page_title: "awx_job_template Resource - awx"
 subcategory: ""
 description: |-
-  
+  Manages an Ansible AWX/Tower job template. A job template is a definition and set of parameters for running an Ansible job. Job templates are useful to execute the same job many times. Job templates can contain specifications for: the inventory to run the job against, the project and playbook to use, credentials, extra variables, and various other parameters.
 ---
 
 # awx_job_template (Resource)
 
-
+Manages an Ansible AWX/Tower job template. A job template is a definition and set of parameters for running an Ansible job. Job templates are useful to execute the same job many times. Job templates can contain specifications for: the inventory to run the job against, the project and playbook to use, credentials, extra variables, and various other parameters.
 
 
 
@@ -17,22 +17,22 @@ description: |-
 
 ### Required
 
-- `name` (String) Name of this job template.
+- `name` (String) Name of this job template. Used to identify the template in the AWX/Tower interface.
 
 ### Optional
 
-- `ask_inventory_on_launch` (Boolean)
-- `description` (String) Optional description
-- `extra_vars` (String)
-- `forks` (Number)
-- `inventory_id` (String) Inventory id
-- `job_tags` (String)
-- `job_type` (String) Choose between run and check.
-- `limit` (String)
-- `playbook` (String) Playbook to use
-- `project_id` (String) Project ID
-- `scm_branch` (String) Specific branch, tag or commit to checkout.
-- `verbosity` (Number) Output verbosity
+- `ask_inventory_on_launch` (Boolean) If enabled, users will be prompted to select an inventory when the job template is launched.
+- `description` (String) Optional description of the job template. Can be used to provide more context about the template's purpose.
+- `extra_vars` (String) A JSON or YAML string containing extra variables to pass to the playbook. These variables will be available to the playbook and any surveys.
+- `forks` (Number) Number of parallel processes to use while executing the playbook. Default of 0 uses the ansible default.
+- `inventory_id` (String) The ID of the inventory to be used by this job template. Defines which hosts the playbook will be run against.
+- `job_tags` (String) Specify which tagged tasks from the playbook to execute. Only tasks with the specified tags will be run.
+- `job_type` (String) The type of job to run. Can be either 'run' for normal execution or 'check' for check mode (dry run).
+- `limit` (String) Limit the execution to specific hosts or groups. Corresponds to ansible's --limit parameter.
+- `playbook` (String) The name of the playbook to be run. The playbook must exist in the project specified by project_id.
+- `project_id` (String) The ID of the project containing the playbook to be used by this job template.
+- `scm_branch` (String) Specific branch, tag or commit to checkout from SCM before running the playbook.
+- `verbosity` (Number) Control the level of output Ansible will produce during execution. Higher numbers mean more verbose output (0-4).
 
 ### Read-Only
 

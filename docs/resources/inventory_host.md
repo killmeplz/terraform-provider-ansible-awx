@@ -3,12 +3,12 @@
 page_title: "awx_inventory_host Resource - awx"
 subcategory: ""
 description: |-
-  
+  Manages a host within an Ansible AWX/Tower inventory. A host represents a managed node that Ansible can configure and manage. Hosts can have variables specific to that host and can be enabled or disabled to control whether they are available for running jobs.
 ---
 
 # awx_inventory_host (Resource)
 
-
+Manages a host within an Ansible AWX/Tower inventory. A host represents a managed node that Ansible can configure and manage. Hosts can have variables specific to that host and can be enabled or disabled to control whether they are available for running jobs.
 
 
 
@@ -17,15 +17,15 @@ description: |-
 
 ### Required
 
-- `inventory_id` (String) The value used by the remote inventory source to uniquely identify the host.
-- `name` (String) Name of this credential.
+- `inventory_id` (String) The ID of the inventory this host belongs to. Hosts must be associated with an inventory to be managed by AWX/Tower.
+- `name` (String) Name of this host. This can be either a DNS name, IP address, or any other name used to identify the host.
 
 ### Optional
 
-- `description` (String) Optional description of this credential.
-- `enabled` (Boolean) Is this host online and available for running jobs?
-- `instance_id` (String) The value used by the remote inventory source to uniquely identify the host.
-- `variables` (String) Specify the type of credential you want to create. Refer to the documentation for details on each type.
+- `description` (String) Optional description of this host. Can be used to provide additional context about the host's purpose or configuration.
+- `enabled` (Boolean) If enabled (true), this host can be used in jobs. If disabled (false), this host will not be used in jobs even if included in the inventory.
+- `instance_id` (String) The instance ID for this host if it is managed through a cloud provider. This helps track the host across IP or DNS changes.
+- `variables` (String) Host variables in JSON or YAML format. These variables will be available to playbooks when running against this specific host and will override inventory variables.
 
 ### Read-Only
 

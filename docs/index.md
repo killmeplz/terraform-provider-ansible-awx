@@ -17,5 +17,5 @@ description: |-
 
 ### Required
 
-- `host` (String) The base URL for the AWX instance.
-- `token` (String) The API token for authenticating with AWX.
+- `host` (String) The base URL for the AWX/Tower instance (e.g., https://awx.example.com). This URL will be used for all API calls.
+- `token` (String, Sensitive) The OAuth2 token or Personal Access Token for authenticating with AWX/Tower. This token must have sufficient permissions to perform the requested operations.
